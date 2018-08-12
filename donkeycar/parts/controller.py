@@ -273,6 +273,7 @@ class JoystickController(object):
 
         while self.running:
             """
+            This is what my PS3 controller returns
             button:
                 "b": circle
                 "a": cross
@@ -295,8 +296,8 @@ class JoystickController(object):
             """
             button, button_state, axis, axis_val = self.js.poll()
 
-            print("buttn:", button)
-            print("buttn_state:", button_state)
+            #print("buttn:", button)
+            #print("buttn_state:", button_state)
 
             if button ==  "b":
                 button = "circle"
