@@ -273,6 +273,8 @@ class JoystickController(object):
 
         while self.running:
             button, button_state, axis, axis_val = self.js.poll()
+            print("buttn:", button)
+            print("buttn_state:", button_state)
 
             if axis == self.steering_axis:
                 self.angle = self.steering_scale * axis_val
