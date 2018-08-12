@@ -272,9 +272,40 @@ class JoystickController(object):
             time.sleep(5)
 
         while self.running:
+            """
+            button:
+                "b": circle
+                "a": cross
+                "y": square
+                "x": triangle
+                "start": start
+                "select": select
+                "dpad_left": dpad left
+                "dpad_right": dpad right
+                "dpad_up": dpad up
+                "dpad_down": dpad down
+                "tr: trigger right
+                "tl: trigger left
+                "tr2: trigger 2 right
+                "tl2: trigger 2 left
+                "mode": PS button
+            button_state:
+                1: down
+                0: up
+            """
             button, button_state, axis, axis_val = self.js.poll()
+
             print("buttn:", button)
             print("buttn_state:", button_state)
+
+            if button ==  "b":
+                button = "circle"
+            elif button == "a":
+                utton = "cross"
+            elif button == "y":
+                button = "square"
+            elif button == "x":
+                butoon = "triangle"
 
             if axis == self.steering_axis:
                 self.angle = self.steering_scale * axis_val
