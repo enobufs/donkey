@@ -306,8 +306,10 @@ class JoystickController(object):
                 if self.auto_record_on_throttle:
                     print('auto record on throttle is enabled.')
                 elif self.recording:
+                    print('Recording: OFF')
                     self.recording = False
                 else:
+                    print('Recording: ON')
                     self.recording = True
 
                 print('recording:', self.recording)
