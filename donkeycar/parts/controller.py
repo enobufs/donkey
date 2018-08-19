@@ -318,7 +318,7 @@ class JoystickController(object):
                 print("throttle", self.throttle)
                 self.on_throttle_changes()
 
-            if button == 'trigger' and button_state == 1:
+            if button == 'select' and button_state == 1:
                 """
                 switch modes from:
                 user: human controlled steer and throttle
