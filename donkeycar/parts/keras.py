@@ -71,9 +71,9 @@ class KerasCategorical(KerasPilot):
 
     def run(self, img_arr):
         img_arr = img_arr.reshape((1,) + img_arr.shape)
-        angle_binned, throttle = self.model.predict(img_arr)
+        angle_binned, velocity = self.model.predict(img_arr)
         angle_unbinned = util.data.linear_unbin(angle_binned[0])
-        return angle_unbinned, throttle[0][0]
+        return angle_unbinned, velocity[0][0]
 
 
 class KerasLinear(KerasPilot):
@@ -91,8 +91,8 @@ class KerasLinear(KerasPilot):
         outputs = self.model.predict(img_arr)
         # print(len(outputs), outputs)
         steering = outputs[0]
-        throttle = outputs[1]
-        return steering[0][0], throttle[0][0]
+        velocity = outputs[1]
+        return steering[0][0], velocity[0][0]
 
 
 def default_categorical():
@@ -121,14 +121,14 @@ def default_categorical():
     angle_out = Dense(15, activation='softmax', name='angle_out')(
         x)  # Connect every input with every output and output 15 hidden units. Use Softmax to give percentage. 15 categories and find best one based off percentage 0.0-1.0
 
-    # continous output of throttle
-    throttle_out = Dense(1, activation='relu', name='throttle_out')(x)  # Reduce to 1 number, Positive number only
+    # continous output of velocity
+    velocity_out = Dense(1, activation='relu', name='velocity_out')(x)  # Reduce to 1 number, Positive number only
 
-    model = Model(inputs=[img_in], outputs=[angle_out, throttle_out])
+    model = Model(inputs=[img_in], outputs=[angle_out, velocity_out])
     model.compile(optimizer='adam',
                   loss={'angle_out': 'categorical_crossentropy',
-                        'throttle_out': 'mean_absolute_error'},
-                  loss_weights={'angle_out': 0.9, 'throttle_out': .01})
+                        'velocity_out': 'mean_absolute_error'},
+                  loss_weights={'angle_out': 0.9, 'velocity_out': .01})
 
     return model
 
@@ -177,14 +177,14 @@ def default_catlin():
     angle_out = Dense(1, activation='sigmoid', name='angle_out')(angle_cat_out)
     # angle_out = Lambda(linear_unbin_layer, output_shape=(1,1, ), name='angle_out')(angle_cat_out)
 
-    # continuous output of throttle
-    throttle_out = Dense(1, activation='relu', name='throttle_out')(x)  # Reduce to 1 number, Positive number only
+    # continuous output of velocity
+    velocity_out = Dense(1, activation='relu', name='velocity_out')(x)  # Reduce to 1 number, Positive number only
 
-    model = Model(inputs=[img_in], outputs=[angle_out, throttle_out])
+    model = Model(inputs=[img_in], outputs=[angle_out, velocity_out])
     model.compile(optimizer='adam',
                   loss={'angle_out': 'mean_squared_error',
-                        'throttle_out': 'mean_absolute_error'},
-                  loss_weights={'angle_out': 0.9, 'throttle_out': .01})
+                        'velocity_out': 'mean_absolute_error'},
+                  loss_weights={'angle_out': 0.9, 'velocity_out': .01})
 
     return model
 
@@ -206,15 +206,15 @@ def default_linear():
     # categorical output of the angle
     angle_out = Dense(1, activation='linear', name='angle_out')(x)
 
-    # continous output of throttle
-    throttle_out = Dense(1, activation='linear', name='throttle_out')(x)
+    # continous output of velocity
+    velocity_out = Dense(1, activation='linear', name='velocity_out')(x)
 
-    model = Model(inputs=[img_in], outputs=[angle_out, throttle_out])
+    model = Model(inputs=[img_in], outputs=[angle_out, velocity_out])
 
     model.compile(optimizer='adam',
                   loss={'angle_out': 'mean_squared_error',
-                        'throttle_out': 'mean_squared_error'},
-                  loss_weights={'angle_out': 0.5, 'throttle_out': .5})
+                        'velocity_out': 'mean_squared_error'},
+                  loss_weights={'angle_out': 0.5, 'velocity_out': .5})
 
     return model
 
