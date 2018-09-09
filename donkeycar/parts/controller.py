@@ -272,7 +272,41 @@ class JoystickController(object):
             time.sleep(5)
 
         while self.running:
+            """
+            This is what my PS3 controller returns
+            button:
+                "b": circle
+                "a": cross
+                "y": square
+                "x": triangle
+                "start": start
+                "select": select
+                "dpad_left": dpad left
+                "dpad_right": dpad right
+                "dpad_up": dpad up
+                "dpad_down": dpad down
+                "tr: trigger right
+                "tl: trigger left
+                "tr2: trigger 2 right
+                "tl2: trigger 2 left
+                "mode": PS button
+            button_state:
+                1: down
+                0: up
+            """
             button, button_state, axis, axis_val = self.js.poll()
+
+            #print("buttn:", button)
+            #print("buttn_state:", button_state)
+
+            if button ==  "b":
+                button = "circle"
+            elif button == "a":
+                utton = "cross"
+            elif button == "y":
+                button = "square"
+            elif button == "x":
+                butoon = "triangle"
 
             if axis == self.steering_axis:
                 self.angle = self.steering_scale * axis_val
@@ -306,8 +340,10 @@ class JoystickController(object):
                 if self.auto_record_on_throttle:
                     print('auto record on throttle is enabled.')
                 elif self.recording:
+                    print('Recording: OFF')
                     self.recording = False
                 else:
+                    print('Recording: ON')
                     self.recording = True
 
                 print('recording:', self.recording)
